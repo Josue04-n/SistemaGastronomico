@@ -1,0 +1,167 @@
+@page "/login"
+@inject AuthService AuthService
+@inject NavigationManager Navigation
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden bg-white">
+                <div class="card-header bg-primary text-white text-center py-4 px-3 border-0">
+                    <div class="d-inline-flex p-3 rounded-circle bg-white bg-opacity-10 mb-2">
+                        <i class="bi bi-shop text-warning" style="font-size: 2rem;"></i>
+                    </div>
+                    <h4 class="mb-1 fw-bold">Sistema Gastronómico UTA</h4>
+                    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill small fw-bold">
+                        Portal para Locales y Administradores
+                    </span>
+                </div>
+
+                <div class="card-body p-4 p-sm-5">
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <div class="alert alert-danger d-flex align-items-center mb-4 py-2 rounded-3" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                            <div class="small">@errorMessage</div>
+                        </div>
+                    }
+
+                    <div class="bg-light p-1 rounded-pill d-flex mb-4 border">
+                        <button class="btn btn-sm flex-fill rounded-pill fw-semibold py-2 @(isLogin ? "btn-primary shadow-sm" : "text-muted")"
+                                @onclick="() => isLogin = true">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
+                        </button>
+                        <button class="btn btn-sm flex-fill rounded-pill fw-semibold py-2 @(!isLogin ? "btn-primary shadow-sm" : "text-muted")"
+                                @onclick="() => isLogin = false">
+                            <i class="bi bi-person-plus-fill me-1"></i> Registrarse
+                        </button>
+                    </div>
+
+                    @if (isLogin)
+                    {
+                        <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+                            <DataAnnotationsValidator />
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold small text-secondary">Correo Institucional o Personal</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-envelope text-muted"></i></span>
+                                    <InputText class="form-control" @bind-Value="loginModel.Email" placeholder="usuario@uta.edu.ec" />
+                                </div>
+                                <ValidationMessage For="() => loginModel.Email" class="text-danger small mt-1" />
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold small text-secondary">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-lock text-muted"></i></span>
+                                    <InputText type="password" class="form-control" @bind-Value="loginModel.Password" placeholder="••••••••" />
+                                </div>
+                                <ValidationMessage For="() => loginModel.Password" class="text-danger small mt-1" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow" disabled="@isLoading">
+                                @if (isLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                    <span>Ingresando al panel...</span>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                                    <span>Acceder al Panel</span>
+                                }
+                            </button>
+                        </EditForm>
+                    }
+                    else
+                    {
+                        <EditForm Model="registerModel" OnValidSubmit="HandleRegister">
+                            <DataAnnotationsValidator />
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold small text-secondary">Nombre o Razón Social</label>
+                                <InputText class="form-control" @bind-Value="registerModel.NombreCompleto" placeholder="Ej: Comedor Doña María / Juan Pérez" />
+                                <ValidationMessage For="() => registerModel.NombreCompleto" class="text-danger small mt-1" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold small text-secondary">Correo Electrónico</label>
+                                <InputText class="form-control" @bind-Value="registerModel.Email" placeholder="ejemplo@uta.edu.ec" />
+                                <ValidationMessage For="() => registerModel.Email" class="text-danger small mt-1" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold small text-secondary">Teléfono / WhatsApp</label>
+                                <InputText class="form-control" @bind-Value="registerModel.Telefono" placeholder="0991234567" />
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold small text-secondary">Contraseña</label>
+                                <InputText type="password" class="form-control" @bind-Value="registerModel.Password" placeholder="Mínimo 6 caracteres" />
+                                <ValidationMessage For="() => registerModel.Password" class="text-danger small mt-1" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow" disabled="@isLoading">
+                                @if (isLoading)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                    <span>Registrando cuenta...</span>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <span>Crear Cuenta de Dueño</span>
+                                }
+                            </button>
+                        </EditForm>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool isLogin = true;
+    private bool isLoading = false;
+    private string? errorMessage;
+
+    private LoginModel loginModel = new();
+    private RegisterModel registerModel = new();
+
+    private async Task HandleLogin()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        var (exito, mensaje, _) = await AuthService.LoginAsync(loginModel);
+        isLoading = false;
+
+        if (exito)
+        {
+            Navigation.NavigateTo("", forceLoad: true);
+        }
+        else
+        {
+            errorMessage = mensaje ?? "Error al iniciar sesión. Verifique sus credenciales.";
+        }
+    }
+
+    private async Task HandleRegister()
+    {
+        isLoading = true;
+        errorMessage = null;
+
+        var (exito, mensaje, _) = await AuthService.RegisterAsync(registerModel);
+        isLoading = false;
+
+        if (exito)
+        {
+            Navigation.NavigateTo("", forceLoad: true);
+        }
+        else
+        {
+            errorMessage = mensaje ?? "Error al registrar la cuenta.";
+        }
+    }
+}

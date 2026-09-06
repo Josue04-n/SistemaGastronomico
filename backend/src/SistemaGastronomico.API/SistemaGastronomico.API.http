@@ -1,0 +1,34 @@
+@SistemaGastronomico.API_HostAddress = http://localhost:5257
+
+### Verificar estado del servicio
+GET {{SistemaGastronomico.API_HostAddress}}/api/health
+Accept: application/json
+
+### Registro de Dueño de Local
+POST {{SistemaGastronomico.API_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "nombreCompleto": "Juan Pérez - Dueño",
+  "email": "juan.perez@uta.edu.ec",
+  "password": "Password123!",
+  "telefono": "0991234567",
+  "rol": 2
+}
+
+### Inicio de Sesión
+POST {{SistemaGastronomico.API_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "juan.perez@uta.edu.ec",
+  "password": "Password123!"
+}
+
+### Obtener Perfil Actual (Reemplazar {{token}} con el generado en Login)
+@token = eyJhbGciOi...
+GET {{SistemaGastronomico.API_HostAddress}}/api/auth/me
+Authorization: Bearer {{token}}
+Accept: application/json
+
+###

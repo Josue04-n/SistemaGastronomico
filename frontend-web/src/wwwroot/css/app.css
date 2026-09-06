@@ -1,0 +1,162 @@
+:root {
+    /* Paleta Gastronómica & Identidad UTA */
+    --uta-red: #8e1616;
+    --uta-red-dark: #6e0f0f;
+    --uta-red-light: #b82323;
+    --uta-red-subtle: #fee2e2;
+
+    --warm-gold: #d97706;
+    --warm-gold-light: #fef3c7;
+    --warm-amber: #f59e0b;
+
+    --culinary-green: #059669;
+    --culinary-green-subtle: #d1fae5;
+
+    --bg-main: #f8fafc;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-muted: #64748b;
+    --sidebar-bg: #1a1615;
+
+    --border-color: #e2e8f0;
+    --card-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+    --card-shadow-hover: 0 10px 25px -4px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+}
+
+html, body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+/* Botones con estilo temático gastronómico / UTA */
+.btn-primary {
+    background-color: var(--uta-red) !important;
+    border-color: var(--uta-red) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--uta-red-dark) !important;
+    border-color: var(--uta-red-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(142, 22, 22, 0.3);
+}
+
+.btn-outline-primary {
+    color: var(--uta-red) !important;
+    border-color: var(--uta-red) !important;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--uta-red) !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+}
+
+.bg-primary {
+    background-color: var(--uta-red) !important;
+}
+
+.text-primary {
+    color: var(--uta-red) !important;
+}
+
+.bg-primary-subtle {
+    background-color: var(--uta-red-subtle) !important;
+}
+
+/* Tarjetas KPI del Dashboard */
+.kpi-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    box-shadow: var(--card-shadow);
+    transition: all 0.25s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--card-shadow-hover);
+}
+
+/* Platos y Módulo de Actualización Rápida */
+.plato-card {
+    border-radius: 1rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-shadow);
+    transition: all 0.25s ease;
+    background-color: #ffffff;
+}
+
+.plato-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--card-shadow-hover);
+}
+
+.plato-card.plato-del-dia {
+    border: 2px solid var(--warm-amber);
+    background: linear-gradient(180deg, #fffcf4 0%, #ffffff 100%);
+}
+
+.badge-plato-dia {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #ffffff;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.35);
+}
+
+/* Controles de Formulario */
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 0.9rem;
+    font-size: 0.95rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--uta-red);
+    box-shadow: 0 0 0 0.25rem rgba(142, 22, 22, 0.15);
+}
+
+/* Switch */
+.form-check-input:checked {
+    background-color: var(--culinary-green);
+    border-color: var(--culinary-green);
+}
+
+/* Modal y diálogos */
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+#blazor-error-ui {
+    color-scheme: light only;
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}

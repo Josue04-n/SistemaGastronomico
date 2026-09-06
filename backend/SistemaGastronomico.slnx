@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SistemaGastronomico.API/SistemaGastronomico.API.csproj" />
+    <Project Path="src/SistemaGastronomico.Application/SistemaGastronomico.Application.csproj" />
+    <Project Path="src/SistemaGastronomico.Domain/SistemaGastronomico.Domain.csproj" />
+    <Project Path="src/SistemaGastronomico.Infrastructure/SistemaGastronomico.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SistemaGastronomico.IntegrationTests/SistemaGastronomico.IntegrationTests.csproj" />
+    <Project Path="tests/SistemaGastronomico.UnitTests/SistemaGastronomico.UnitTests.csproj" />
+  </Folder>
+</Solution>

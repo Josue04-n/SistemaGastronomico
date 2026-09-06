@@ -1,0 +1,232 @@
+@page "/promociones"
+@attribute [Authorize]
+@inject LocalService LocalService
+@inject PromocionService PromocionService
+@inject NavigationManager Navigation
+
+<PageTitle>Promociones y Combos - Sistema Gastronómico UTA</PageTitle>
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-2 border-bottom">
+    <div>
+        <h2 class="fw-bold mb-1">
+            <i class="bi bi-tags-fill text-danger me-2"></i>Promociones y Ofertas
+        </h2>
+        <p class="text-muted small mb-0">Publica promociones de almuerzos, combos de pizza o combos de café con pan para la tarde.</p>
+    </div>
+
+    @if (localActual != null)
+    {
+        <button class="btn btn-danger d-flex align-items-center gap-2" @onclick="AbrirModalCrear">
+            <i class="bi bi-plus-lg"></i> Nueva Promoción
+        </button>
+    }
+</div>
+
+@if (cargando)
+{
+    <div class="text-center py-5">
+        <div class="spinner-border text-danger" role="status"></div>
+    </div>
+}
+else if (localActual == null)
+{
+    <div class="alert alert-warning p-4 shadow-sm" role="alert">
+        <h5 class="alert-heading fw-bold"><i class="bi bi-exclamation-circle me-2"></i>Primero registra tu local</h5>
+        <p>Para publicar promociones, primero debes registrar los datos de tu local.</p>
+        <a href="local" class="btn btn-warning btn-sm">Ir a Mi Local</a>
+    </div>
+}
+else
+{
+    @if (promociones.Count == 0)
+    {
+        <div class="card border-0 shadow-sm text-center p-5">
+            <i class="bi bi-tag text-muted" style="font-size: 3rem;"></i>
+            <h5 class="fw-bold mt-2">No tienes promociones activas actualmente</h5>
+            <p class="text-muted small">Crea ofertas atractivas como combos 2x1 o descuentos en desayunos/meriendas para los estudiantes.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3">
+            @foreach (var promo in promociones)
+            {
+                <div class="col-md-6 col-lg-4" @key="promo.Id">
+                    <div class="card border-0 shadow-sm h-100 rounded-3 @(promo.EstaActiva ? "" : "opacity-75 bg-light")">
+                        <div class="card-body p-3 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h5 class="fw-bold mb-1">@promo.Titulo</h5>
+                                <div class="text-end">
+                                    <span class="fs-5 fw-bold text-danger">$@promo.PrecioPromocional.ToString("F2")</span>
+                                    @if (promo.PrecioOriginal.HasValue)
+                                    {
+                                        <div class="text-muted text-decoration-line-through small">
+                                            $@promo.PrecioOriginal.Value.ToString("F2")
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <p class="text-muted small my-2 flex-grow-1">
+                                @promo.Descripcion
+                            </p>
+
+                            <div class="text-muted small mb-3">
+                                <i class="bi bi-calendar-event me-1"></i>
+                                Vigencia: @promo.FechaInicio.ToString("dd/MM/yyyy") al @promo.FechaFin.ToString("dd/MM/yyyy")
+                            </div>
+
+                            <div class="border-top pt-2 d-flex justify-content-between align-items-center">
+                                <button class="btn btn-sm @(promo.EstaActiva ? "btn-success" : "btn-secondary") px-3 py-1"
+                                        @onclick="() => TogglePromo(promo)">
+                                    <i class="bi @(promo.EstaActiva ? "bi-check-circle-fill" : "bi-pause-circle-fill") me-1"></i>
+                                    @(promo.EstaActiva ? "Activa" : "Pausada")
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
+
+@if (mostrarModal)
+{
+    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold">Nueva Promoción / Combo</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="CerrarModal"></button>
+                </div>
+
+                <EditForm Model="modeloPromo" OnValidSubmit="GuardarPromocion">
+                    <DataAnnotationsValidator />
+
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Título de la Oferta</label>
+                            <InputText class="form-control" @bind-Value="modeloPromo.Titulo" placeholder="Ej: Combo Pizza Mediana + Cola / Café con Pan Tarde" />
+                            <ValidationMessage For="() => modeloPromo.Titulo" class="text-danger small" />
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Precio Normal ($)</label>
+                                <InputNumber class="form-control" @bind-Value="modeloPromo.PrecioOriginal" step="0.10" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Precio Promocional ($)</label>
+                                <InputNumber class="form-control" @bind-Value="modeloPromo.PrecioPromocional" step="0.10" />
+                                <ValidationMessage For="() => modeloPromo.PrecioPromocional" class="text-danger small" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Descripción del Combo</label>
+                            <InputTextArea class="form-control" rows="2" @bind-Value="modeloPromo.Descripcion" placeholder="Ej: Válido a partir de las 15:00. Incluye café filtrado o pasado más dos empanadas de viento." />
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Fecha de Inicio</label>
+                                <InputDate class="form-control" @bind-Value="modeloPromo.FechaInicio" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold">Fecha de Fin</label>
+                                <InputDate class="form-control" @bind-Value="modeloPromo.FechaFin" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger" disabled="@guardando">
+                            @if (guardando)
+                            {
+                                <span class="spinner-border spinner-border-sm me-1"></span>
+                                <span>Guardando...</span>
+                            }
+                            else
+                            {
+                                <span>Publicar Promoción</span>
+                            }
+                        </button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool cargando = true;
+    private bool guardando = false;
+    private bool mostrarModal = false;
+
+    private LocalModel? localActual;
+    private List<PromocionModel> promociones = new();
+    private CreatePromocionModel modeloPromo = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarDatos();
+    }
+
+    private async Task CargarDatos()
+    {
+        cargando = true;
+        var locales = await LocalService.GetMisLocalesAsync();
+        localActual = locales.FirstOrDefault();
+
+        if (localActual != null)
+        {
+            promociones = await PromocionService.GetPromocionesAsync(localActual.Id);
+        }
+
+        cargando = false;
+    }
+
+    private void AbrirModalCrear()
+    {
+        if (localActual == null) return;
+
+        modeloPromo = new CreatePromocionModel
+        {
+            LocalId = localActual.Id,
+            PrecioOriginal = 3.00m,
+            PrecioPromocional = 2.25m,
+            FechaInicio = DateTime.Today,
+            FechaFin = DateTime.Today.AddDays(7)
+        };
+        mostrarModal = true;
+    }
+
+    private void CerrarModal()
+    {
+        mostrarModal = false;
+    }
+
+    private async Task GuardarPromocion()
+    {
+        guardando = true;
+        var (exito, creada, _) = await PromocionService.CreateAsync(modeloPromo);
+        if (exito && creada != null)
+        {
+            promociones.Insert(0, creada);
+            mostrarModal = false;
+        }
+        guardando = false;
+    }
+
+    private async Task TogglePromo(PromocionModel promo)
+    {
+        promo.EstaActiva = !promo.EstaActiva;
+        var exito = await PromocionService.ToggleAsync(promo.Id);
+        if (!exito)
+        {
+            promo.EstaActiva = !promo.EstaActiva;
+        }
+    }
+}
