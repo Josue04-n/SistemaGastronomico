@@ -3,33 +3,34 @@
 @inject NavigationManager Navigation
 
 <div class="page">
-    <div class="sidebar bg-dark">
+    <div class="sidebar">
         <NavMenu />
     </div>
 
     <main>
         <div class="top-row px-4 d-flex justify-content-between align-items-center bg-white border-bottom shadow-sm">
-            <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-primary px-3 py-2 text-white">
-                    <i class="bi bi-mortarboard-fill me-1"></i> Campus UTA
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center gap-2 bg-primary-subtle px-3 py-1 rounded-pill border border-primary-subtle">
+                    <i class="bi bi-mortarboard-fill text-primary"></i>
+                    <span class="fw-bold small text-primary">Campus UTA</span>
+                </div>
+                <span class="text-muted fw-medium small d-none d-md-inline border-start ps-3">
+                    Portal de Gestión para Administradores de Locales
                 </span>
-                <span class="text-muted small d-none d-md-inline">Portal de Administración para Locales</span>
             </div>
 
             <div class="d-flex align-items-center gap-3">
                 <AuthorizeView>
                     <Authorized>
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-person-circle fs-5 text-secondary"></i>
-                            <span class="fw-semibold small">@context.User.Identity?.Name</span>
-                            <span class="badge bg-secondary">Dueño</span>
+                        <div class="d-flex align-items-center px-3 py-1 bg-light rounded-pill border">
+                            <span class="fw-bold text-dark small">@context.User.Identity?.Name</span>
                         </div>
-                        <button class="btn btn-outline-danger btn-sm d-flex align-items-center gap-1" @onclick="CerrarSesion">
-                            <i class="bi bi-box-arrow-right"></i> Salir
+                        <button class="btn btn-outline-secondary btn-sm fw-semibold px-3 py-1 rounded-pill" @onclick="CerrarSesion">
+                            Salir
                         </button>
                     </Authorized>
                     <NotAuthorized>
-                        <a href="login" class="btn btn-primary btn-sm">
+                        <a href="login" class="btn btn-primary btn-sm px-3 py-1 fw-bold rounded-pill">
                             <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
                         </a>
                     </NotAuthorized>
@@ -42,6 +43,16 @@
         </article>
     </main>
 </div>
+
+<style>
+    .bg-uta-badge {
+        background-color: #003865 !important;
+    }
+    .bg-uta-user-chip {
+        background-color: #f1f5f9;
+        border-color: #cbd5e1 !important;
+    }
+</style>
 
 @code {
     private async Task CerrarSesion()

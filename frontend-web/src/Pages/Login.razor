@@ -1,125 +1,159 @@
 @page "/login"
+@layout AuthLayout
 @inject AuthService AuthService
 @inject NavigationManager Navigation
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-7 col-lg-5">
-            <div class="card shadow-lg border-0 rounded-4 overflow-hidden bg-white">
-                <div class="card-header bg-primary text-white text-center py-4 px-3 border-0">
-                    <div class="d-inline-flex p-3 rounded-circle bg-white bg-opacity-10 mb-2">
-                        <i class="bi bi-shop text-warning" style="font-size: 2rem;"></i>
-                    </div>
-                    <h4 class="mb-1 fw-bold">Sistema Gastronómico UTA</h4>
-                    <span class="badge bg-warning text-dark px-3 py-1 rounded-pill small fw-bold">
-                        Portal para Locales y Administradores
-                    </span>
-                </div>
+<PageTitle>Acceso al Panel - Sistema Gastronómico UTA</PageTitle>
 
-                <div class="card-body p-4 p-sm-5">
-                    @if (!string.IsNullOrEmpty(errorMessage))
-                    {
-                        <div class="alert alert-danger d-flex align-items-center mb-4 py-2 rounded-3" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
-                            <div class="small">@errorMessage</div>
-                        </div>
-                    }
-
-                    <div class="bg-light p-1 rounded-pill d-flex mb-4 border">
-                        <button class="btn btn-sm flex-fill rounded-pill fw-semibold py-2 @(isLogin ? "btn-primary shadow-sm" : "text-muted")"
-                                @onclick="() => isLogin = true">
-                            <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
-                        </button>
-                        <button class="btn btn-sm flex-fill rounded-pill fw-semibold py-2 @(!isLogin ? "btn-primary shadow-sm" : "text-muted")"
-                                @onclick="() => isLogin = false">
-                            <i class="bi bi-person-plus-fill me-1"></i> Registrarse
-                        </button>
-                    </div>
-
-                    @if (isLogin)
-                    {
-                        <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
-                            <DataAnnotationsValidator />
-
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold small text-secondary">Correo Institucional o Personal</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="bi bi-envelope text-muted"></i></span>
-                                    <InputText class="form-control" @bind-Value="loginModel.Email" placeholder="usuario@uta.edu.ec" />
-                                </div>
-                                <ValidationMessage For="() => loginModel.Email" class="text-danger small mt-1" />
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold small text-secondary">Contraseña</label>
-                                <div class="input-group">
-                                    <span class="input-group-text bg-light"><i class="bi bi-lock text-muted"></i></span>
-                                    <InputText type="password" class="form-control" @bind-Value="loginModel.Password" placeholder="••••••••" />
-                                </div>
-                                <ValidationMessage For="() => loginModel.Password" class="text-danger small mt-1" />
-                            </div>
-
-                            <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow" disabled="@isLoading">
-                                @if (isLoading)
-                                {
-                                    <span class="spinner-border spinner-border-sm me-2"></span>
-                                    <span>Ingresando al panel...</span>
-                                }
-                                else
-                                {
-                                    <i class="bi bi-box-arrow-in-right me-2"></i>
-                                    <span>Acceder al Panel</span>
-                                }
-                            </button>
-                        </EditForm>
-                    }
-                    else
-                    {
-                        <EditForm Model="registerModel" OnValidSubmit="HandleRegister">
-                            <DataAnnotationsValidator />
-
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold small text-secondary">Nombre o Razón Social</label>
-                                <InputText class="form-control" @bind-Value="registerModel.NombreCompleto" placeholder="Ej: Comedor Doña María / Juan Pérez" />
-                                <ValidationMessage For="() => registerModel.NombreCompleto" class="text-danger small mt-1" />
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold small text-secondary">Correo Electrónico</label>
-                                <InputText class="form-control" @bind-Value="registerModel.Email" placeholder="ejemplo@uta.edu.ec" />
-                                <ValidationMessage For="() => registerModel.Email" class="text-danger small mt-1" />
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold small text-secondary">Teléfono / WhatsApp</label>
-                                <InputText class="form-control" @bind-Value="registerModel.Telefono" placeholder="0991234567" />
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold small text-secondary">Contraseña</label>
-                                <InputText type="password" class="form-control" @bind-Value="registerModel.Password" placeholder="Mínimo 6 caracteres" />
-                                <ValidationMessage For="() => registerModel.Password" class="text-danger small mt-1" />
-                            </div>
-
-                            <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold shadow" disabled="@isLoading">
-                                @if (isLoading)
-                                {
-                                    <span class="spinner-border spinner-border-sm me-2"></span>
-                                    <span>Registrando cuenta...</span>
-                                }
-                                else
-                                {
-                                    <i class="bi bi-check-circle-fill me-2"></i>
-                                    <span>Crear Cuenta de Dueño</span>
-                                }
-                            </button>
-                        </EditForm>
-                    }
-                </div>
+<div class="w-100" style="max-width: 480px;">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden bg-white">
+        <!-- Encabezado de la Tarjeta en Azul Institucional UTA -->
+        <div class="card-header bg-uta-card-header text-white text-center py-4 px-4 border-0">
+            <div class="d-inline-flex p-3 rounded-circle bg-white text-primary mb-2 shadow-sm">
+                <i class="bi bi-shop-window text-uta-blue" style="font-size: 2rem;"></i>
             </div>
+            <h4 class="mb-1 fw-bold text-white">Panel de Administración</h4>
+            <span class="badge bg-white text-dark px-3 py-1 rounded-pill small fw-bold mt-1 shadow-sm">
+                <i class="bi bi-person-badge-fill me-1 text-primary"></i> Locales Gastronómicos UTA
+            </span>
+        </div>
+
+        <div class="card-body p-4 p-sm-5">
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger d-flex align-items-center mb-4 py-2 px-3 rounded-3 border-danger" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5 text-danger"></i>
+                    <div class="small fw-semibold text-danger">@errorMessage</div>
+                </div>
+            }
+
+            <!-- Selector de Pestañas con Alto Contraste -->
+            <div class="bg-light p-1 rounded-pill d-flex mb-4 border border-secondary border-opacity-25">
+                <button class="btn btn-sm flex-fill rounded-pill fw-bold py-2 @(isLogin ? "btn-uta-tab-active shadow-sm" : "text-dark")"
+                        @onclick="() => isLogin = true">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Iniciar Sesión
+                </button>
+                <button class="btn btn-sm flex-fill rounded-pill fw-bold py-2 @(!isLogin ? "btn-uta-tab-active shadow-sm" : "text-dark")"
+                        @onclick="() => isLogin = false">
+                    <i class="bi bi-person-plus-fill me-1"></i> Registrarse
+                </button>
+            </div>
+
+            @if (isLogin)
+            {
+                <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+                    <DataAnnotationsValidator />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-dark">Correo Electrónico</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-secondary border-secondary border-opacity-50"><i class="bi bi-envelope-fill"></i></span>
+                            <InputText class="form-control text-dark fw-medium border-secondary border-opacity-50" @bind-Value="loginModel.Email" placeholder="ejemplo@uta.edu.ec" />
+                        </div>
+                        <ValidationMessage For="() => loginModel.Email" class="text-danger small mt-1 fw-semibold" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-dark">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-secondary border-secondary border-opacity-50"><i class="bi bi-lock-fill"></i></span>
+                            <InputText type="password" class="form-control text-dark fw-medium border-secondary border-opacity-50" @bind-Value="loginModel.Password" placeholder="••••••••" />
+                        </div>
+                        <ValidationMessage For="() => loginModel.Password" class="text-danger small mt-1 fw-semibold" />
+                    </div>
+
+                    <button type="submit" class="btn btn-uta-primary w-100 py-3 fw-bold rounded-3 shadow-sm" disabled="@isLoading">
+                        @if (isLoading)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                            <span>Validando credenciales...</span>
+                        }
+                        else
+                        {
+                            <i class="bi bi-box-arrow-in-right me-2 fs-6"></i>
+                            <span>Ingresar al Panel</span>
+                        }
+                    </button>
+                </EditForm>
+            }
+            else
+            {
+                <EditForm Model="registerModel" OnValidSubmit="HandleRegister">
+                    <DataAnnotationsValidator />
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-dark">Nombre del local</label>
+                        <InputText class="form-control text-dark fw-medium border-secondary border-opacity-50" @bind-Value="registerModel.NombreCompleto" placeholder="Ej: Comedor Doña María / Juan Pérez" />
+                        <ValidationMessage For="() => registerModel.NombreCompleto" class="text-danger small mt-1 fw-semibold" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-dark">Correo Electrónico</label>
+                        <InputText class="form-control text-dark fw-medium border-secondary border-opacity-50" @bind-Value="registerModel.Email" placeholder="usuario@uta.edu.ec" />
+                        <ValidationMessage For="() => registerModel.Email" class="text-danger small mt-1 fw-semibold" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-dark">Teléfono</label>
+                        <InputText class="form-control text-dark fw-medium border-secondary border-opacity-50" @bind-Value="registerModel.Telefono" placeholder="0991234567" />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small text-dark">Contraseña</label>
+                        <InputText type="password" class="form-control text-dark fw-medium border-secondary border-opacity-50" @bind-Value="registerModel.Password" placeholder="••••••••" />
+                        <ValidationMessage For="() => registerModel.Password" class="text-danger small mt-1 fw-semibold" />
+                    </div>
+
+                    <button type="submit" class="btn btn-uta-primary w-100 py-3 fw-bold rounded-3 shadow-sm" disabled="@isLoading">
+                        @if (isLoading)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                            <span>Creando cuenta...</span>
+                        }
+                        else
+                        {
+                            <i class="bi bi-check-circle-fill me-2 fs-6"></i>
+                            <span>Registrar Cuenta</span>
+                        }
+                    </button>
+                </EditForm>
+            }
         </div>
     </div>
 </div>
+
+<style>
+    .bg-uta-card-header {
+        background: linear-gradient(135deg, #002847 0%, #004b87 100%) !important;
+    }
+    .text-uta-blue {
+        color: #003865 !important;
+    }
+    .btn-uta-primary {
+        background-color: #004b87 !important;
+        border-color: #004b87 !important;
+        color: #ffffff !important;
+        transition: background-color 0.15s ease;
+    }
+    .btn-uta-primary, .btn-uta-primary * {
+        color: #ffffff !important;
+    }
+    .btn-uta-primary:hover {
+        background-color: #002847 !important;
+        border-color: #002847 !important;
+        color: #ffffff !important;
+    }
+    .btn-uta-primary:hover * {
+        color: #ffffff !important;
+    }
+    .btn-uta-tab-active {
+        background-color: #004b87 !important;
+        color: #ffffff !important;
+    }
+    .btn-uta-tab-active, .btn-uta-tab-active * {
+        color: #ffffff !important;
+    }
+</style>
 
 @code {
     private bool isLogin = true;
@@ -161,7 +195,7 @@
         }
         else
         {
-            errorMessage = mensaje ?? "Error al registrar la cuenta.";
+            errorMessage = mensaje ?? "Error al registrar la cuenta. Verifique que el correo no esté registrado.";
         }
     }
 }

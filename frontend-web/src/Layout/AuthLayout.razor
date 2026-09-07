@@ -1,0 +1,53 @@
+@inherits LayoutComponentBase
+
+<div class="auth-wrapper d-flex flex-column min-vh-100 bg-light">
+    <!-- Barra Superior Institucional UTA -->
+    <header class="bg-uta-blue py-3 px-4 shadow-sm border-bottom border-white border-opacity-25">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+                <div class="uta-badge-icon bg-white text-uta-blue rounded-circle p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px;">
+                    <i class="bi bi-mortarboard-fill fs-5"></i>
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0 text-white tracking-wide">UNIVERSIDAD TÉCNICA DE AMBATO</h5>
+                    <span class="text-white-50 small fw-medium">Plataforma Gastronómica Universitaria</span>
+                </div>
+            </div>
+            <div class="d-none d-md-block text-white-50 small">
+                <i class="bi bi-shield-lock-fill me-1 text-white"></i> Acceso Seguro Administradores
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Central (Login / Registro) -->
+    <main class="flex-grow-1 d-flex align-items-center justify-content-center py-4 px-3">
+        @Body
+    </main>
+
+    <!-- Pie de Página Institucional -->
+    <footer class="bg-white border-top py-3 text-center text-secondary small">
+        <div class="container">
+            <p class="mb-0 fw-medium">
+                © @DateTime.Now.Year <strong>Universidad Técnica de Ambato</strong> • Dirección de Tecnologías de la Información y Comunicación (DITIC)
+            </p>
+        </div>
+    </footer>
+</div>
+
+<style>
+    .bg-uta-blue {
+        background: linear-gradient(135deg, #002847 0%, #004b87 100%) !important;
+    }
+    .text-uta-blue {
+        color: #003865 !important;
+    }
+    .auth-wrapper {
+        background-color: #f1f5f9 !important;
+    }
+    header.bg-uta-blue h5 {
+        color: #ffffff !important;
+    }
+    header.bg-uta-blue .text-white-50 {
+        color: rgba(255, 255, 255, 0.85) !important;
+    }
+</style>

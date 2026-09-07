@@ -8,9 +8,7 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
     <div>
-        <h2 class="fw-bold mb-1">
-            <i class="bi bi-shop text-primary me-2"></i>Información de Mi Local
-        </h2>
+        <h2 class="fw-bold mb-1 text-dark">Información de Mi Local</h2>
         <p class="text-muted small mb-0">Configura los datos que verán los estudiantes de la UTA al buscar comida</p>
     </div>
 </div>
@@ -39,23 +37,23 @@ else
         </div>
     }
 
-    <div class="row g-4">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-sm rounded-3">
-                <div class="card-body p-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-10">
+            <div class="card border shadow-sm rounded-4 bg-white">
+                <div class="card-body p-4 p-md-5">
                     <EditForm Model="modelo" OnValidSubmit="GuardarLocal">
                         <DataAnnotationsValidator />
 
-                        <h5 class="fw-bold mb-3 text-secondary">Datos Principales</h5>
+                        <h5 class="fw-bold mb-3 text-dark pb-2 border-bottom">Datos Principales</h5>
                         <div class="row g-3 mb-3">
                             <div class="col-md-8">
-                                <label class="form-label fw-semibold">Nombre del Establecimiento</label>
+                                <label class="form-label fw-bold small text-dark">Nombre del Establecimiento</label>
                                 <InputText class="form-control" @bind-Value="modelo.Nombre" placeholder="Ej: Comedor Doña Carmen" />
                                 <ValidationMessage For="() => modelo.Nombre" class="text-danger small" />
                             </div>
 
                             <div class="col-md-4">
-                                <label class="form-label fw-semibold">Categoría Gastronómica</label>
+                                <label class="form-label fw-bold small text-dark">Categoría Gastronómica</label>
                                 <InputSelect class="form-select" @bind-Value="modelo.Categoria">
                                     <option value="@CategoriaLocalModel.Almuerzos">Almuerzos</option>
                                     <option value="@CategoriaLocalModel.ComidaRapida">Comida Rápida</option>
@@ -69,15 +67,15 @@ else
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-semibold">Descripción o Especialidad</label>
+                                <label class="form-label fw-bold small text-dark">Descripción o Especialidad</label>
                                 <InputTextArea class="form-control" rows="2" @bind-Value="modelo.Descripcion" placeholder="Ej: Almuerzos ejecutivos completos con sopa, segundo, jugo y postre. Menú económico para universitarios." />
                             </div>
                         </div>
 
-                        <h5 class="fw-bold mb-3 mt-4 text-secondary">Ubicación y Campus UTA</h5>
+                        <h5 class="fw-bold mb-3 mt-4 text-dark pb-2 border-bottom">Ubicación y Campus UTA</h5>
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Campus UTA Más Cercano</label>
+                                <label class="form-label fw-bold small text-dark">Campus UTA Más Cercano</label>
                                 <InputSelect class="form-select" @bind-Value="modelo.CampusCercano">
                                     <option value="@CampusUTAModel.Huachi">Campus Huachi</option>
                                     <option value="@CampusUTAModel.Ingahurco">Campus Ingahurco</option>
@@ -86,73 +84,58 @@ else
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Dirección</label>
+                                <label class="form-label fw-bold small text-dark">Dirección</label>
                                 <InputText class="form-control" @bind-Value="modelo.Direccion" placeholder="Av. Los Chasquis y Río Guayllabamba" />
                                 <ValidationMessage For="() => modelo.Direccion" class="text-danger small" />
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-semibold">Referencia Universitaria</label>
+                                <label class="form-label fw-bold small text-dark">Referencia Universitaria</label>
                                 <InputText class="form-control" @bind-Value="modelo.Referencia" placeholder="Ej: Diagonal a la puerta 3 del Campus Huachi, junto a la fotocopiadora" />
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Latitud GPS</label>
+                                <label class="form-label fw-bold small text-dark">Latitud GPS</label>
                                 <InputNumber class="form-control" @bind-Value="modelo.Latitud" step="0.000001" />
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Longitud GPS</label>
+                                <label class="form-label fw-bold small text-dark">Longitud GPS</label>
                                 <InputNumber class="form-control" @bind-Value="modelo.Longitud" step="0.000001" />
                             </div>
                         </div>
 
-                        <h5 class="fw-bold mb-3 mt-4 text-secondary">Contacto y Horarios</h5>
+                        <h5 class="fw-bold mb-3 mt-4 text-dark pb-2 border-bottom">Contacto y Horarios</h5>
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">WhatsApp para Pedidos</label>
+                                <label class="form-label fw-bold small text-dark">WhatsApp para Pedidos</label>
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-whatsapp text-success"></i></span>
+                                    <span class="input-group-text bg-light text-success border"><i class="bi bi-whatsapp"></i></span>
                                     <InputText class="form-control" @bind-Value="modelo.WhatsApp" placeholder="0991234567" />
                                 </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-semibold">Horario de Atención</label>
+                                <label class="form-label fw-bold small text-dark">Horario de Atención</label>
                                 <InputText class="form-control" @bind-Value="modelo.HorarioApertura" placeholder="Ej: Lun - Vie: 07:30 a 17:00" />
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary px-4 py-2 fw-semibold" disabled="@guardando">
-                            @if (guardando)
-                            {
-                                <span class="spinner-border spinner-border-sm me-1"></span>
-                                <span>Guardando...</span>
-                            }
-                            else
-                            {
-                                <i class="bi bi-floppy me-1"></i>
-                                <span>Guardar Cambios</span>
-                            }
-                        </button>
+                        <div class="d-flex justify-content-end pt-2">
+                            <button type="submit" class="btn btn-primary px-4 py-2 fw-bold shadow-sm" disabled="@guardando">
+                                @if (guardando)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-1 text-white"></span>
+                                    <span class="text-white">Guardando...</span>
+                                }
+                                else
+                                {
+                                    <span class="text-white">Guardar Cambios</span>
+                                }
+                            </button>
+                        </div>
                     </EditForm>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-3 p-4 bg-light">
-                <h5 class="fw-bold mb-3"><i class="bi bi-info-circle text-primary me-2"></i>Guía de Geolocalización</h5>
-                <p class="small text-muted mb-2">
-                    Las coordenadas ingresadas se utilizarán para calcular automáticamente la distancia a pie para los estudiantes que usen la app móvil o el mapa.
-                </p>
-                <hr />
-                <h6 class="fw-semibold small">Coordenadas de Referencia:</h6>
-                <ul class="list-unstyled small text-muted">
-                    <li><strong>Campus Huachi:</strong> -1.2687, -78.6254</li>
-                    <li><strong>Campus Ingahurco:</strong> -1.2415, -78.6180</li>
-                    <li><strong>Campus Querochaca:</strong> -1.3325, -78.6012</li>
-                </ul>
             </div>
         </div>
     </div>

@@ -1,8 +1,13 @@
-<div class="top-row ps-3 navbar navbar-dark bg-dark">
+<div class="top-row ps-3 navbar navbar-dark bg-uta-sidebar-header border-bottom border-secondary border-opacity-25">
     <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="">
-            <i class="bi bi-shop text-warning fs-5"></i>
-            <span class="fw-bold">UTA Gastronomía</span>
+        <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold py-2" href="">
+            <span class="bg-white text-primary rounded-circle p-1 d-inline-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px;">
+                <i class="bi bi-mortarboard-fill text-uta-brand"></i>
+            </span>
+            <div class="d-flex flex-column lh-1">
+                <span class="fs-6 fw-bold text-white">UTA Gastronomía</span>
+                <span class="text-white-50 text-uppercase tracking-wider" style="font-size: 0.65rem;">Panel Administrativo</span>
+            </div>
         </a>
         <button title="Menú de navegación" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
@@ -11,29 +16,52 @@
 </div>
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="nav flex-column py-3">
-        <div class="nav-item px-3 mb-2">
-            <NavLink class="nav-link d-flex align-items-center gap-2" href="" Match="NavLinkMatch.All">
-                <i class="bi bi-speedometer2 fs-5"></i> Dashboard
-            </NavLink>
-        </div>
-        <div class="nav-item px-3 mb-2">
-            <NavLink class="nav-link d-flex align-items-center gap-2" href="local">
-                <i class="bi bi-geo-alt-fill fs-5"></i> Mi Local
-            </NavLink>
-        </div>
-        <div class="nav-item px-3 mb-2">
-            <NavLink class="nav-link d-flex align-items-center gap-2" href="menu">
-                <i class="bi bi-egg-fried fs-5"></i> Menú & Actualización Rápida
-            </NavLink>
-        </div>
-        <div class="nav-item px-3 mb-2">
-            <NavLink class="nav-link d-flex align-items-center gap-2" href="promociones">
-                <i class="bi bi-tags-fill fs-5"></i> Promociones
-            </NavLink>
-        </div>
-    </nav>
+    <AuthorizeView>
+        <Authorized>
+            <nav class="nav flex-column py-3">
+                <div class="nav-item px-3 mb-2">
+                    <NavLink class="nav-link d-flex align-items-center gap-3 py-2 px-3 rounded-3" href="" Match="NavLinkMatch.All">
+                        <i class="bi bi-grid-1x2-fill fs-5"></i>
+                        <span>Dashboard</span>
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3 mb-2">
+                    <NavLink class="nav-link d-flex align-items-center gap-3 py-2 px-3 rounded-3" href="local">
+                        <i class="bi bi-shop-window fs-5"></i>
+                        <span>Mi Local</span>
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3 mb-2">
+                    <NavLink class="nav-link d-flex align-items-center gap-3 py-2 px-3 rounded-3" href="menu">
+                        <i class="bi bi-egg-fried fs-5"></i>
+                        <span>Menú y Actualización</span>
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3 mb-2">
+                    <NavLink class="nav-link d-flex align-items-center gap-3 py-2 px-3 rounded-3" href="promociones">
+                        <i class="bi bi-tags-fill fs-5"></i>
+                        <span>Promociones</span>
+                    </NavLink>
+                </div>
+            </nav>
+        </Authorized>
+    </AuthorizeView>
 </div>
+
+<style>
+    .bg-uta-sidebar-header {
+        background-color: #001f38 !important;
+    }
+    .text-uta-brand {
+        color: #004b87 !important;
+    }
+    .navbar-brand, .navbar-brand * {
+        color: #ffffff !important;
+    }
+    .navbar-brand .text-white-50 {
+        color: rgba(255, 255, 255, 0.75) !important;
+    }
+</style>
 
 @code {
     private bool collapseNavMenu = true;

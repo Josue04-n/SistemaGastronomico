@@ -8,15 +8,15 @@
 
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-2 border-bottom">
     <div>
-        <h2 class="fw-bold mb-1">
-            <i class="bi bi-tags-fill text-danger me-2"></i>Promociones y Ofertas
+        <h2 class="fw-bold mb-1 text-dark">
+            <i class="bi bi-tags-fill text-primary me-2"></i>Promociones y Ofertas
         </h2>
         <p class="text-muted small mb-0">Publica promociones de almuerzos, combos de pizza o combos de café con pan para la tarde.</p>
     </div>
 
     @if (localActual != null)
     {
-        <button class="btn btn-danger d-flex align-items-center gap-2" @onclick="AbrirModalCrear">
+        <button class="btn btn-primary d-flex align-items-center gap-2 px-3 py-2 shadow-sm rounded-3" @onclick="AbrirModalCrear">
             <i class="bi bi-plus-lg"></i> Nueva Promoción
         </button>
     }
@@ -25,24 +25,26 @@
 @if (cargando)
 {
     <div class="text-center py-5">
-        <div class="spinner-border text-danger" role="status"></div>
+        <div class="spinner-border text-primary" role="status"></div>
     </div>
 }
 else if (localActual == null)
 {
-    <div class="alert alert-warning p-4 shadow-sm" role="alert">
+    <div class="alert alert-warning p-4 rounded-4 shadow-sm border" role="alert">
         <h5 class="alert-heading fw-bold"><i class="bi bi-exclamation-circle me-2"></i>Primero registra tu local</h5>
         <p>Para publicar promociones, primero debes registrar los datos de tu local.</p>
-        <a href="local" class="btn btn-warning btn-sm">Ir a Mi Local</a>
+        <a href="local" class="btn btn-warning btn-sm fw-semibold">Ir a Mi Local</a>
     </div>
 }
 else
 {
     @if (promociones.Count == 0)
     {
-        <div class="card border-0 shadow-sm text-center p-5">
-            <i class="bi bi-tag text-muted" style="font-size: 3rem;"></i>
-            <h5 class="fw-bold mt-2">No tienes promociones activas actualmente</h5>
+        <div class="card border shadow-sm text-center p-5 rounded-4 bg-white">
+            <div class="d-inline-flex p-4 rounded-circle mx-auto mb-2 bg-primary-subtle text-primary">
+                <i class="bi bi-tag-fill text-primary" style="font-size: 2.5rem;"></i>
+            </div>
+            <h5 class="fw-bold mt-2 text-dark">No tienes promociones activas actualmente</h5>
             <p class="text-muted small">Crea ofertas atractivas como combos 2x1 o descuentos en desayunos/meriendas para los estudiantes.</p>
         </div>
     }
@@ -52,12 +54,12 @@ else
             @foreach (var promo in promociones)
             {
                 <div class="col-md-6 col-lg-4" @key="promo.Id">
-                    <div class="card border-0 shadow-sm h-100 rounded-3 @(promo.EstaActiva ? "" : "opacity-75 bg-light")">
-                        <div class="card-body p-3 d-flex flex-column">
+                    <div class="card border shadow-sm h-100 rounded-4 bg-white @(promo.EstaActiva ? "" : "opacity-75 bg-light")">
+                        <div class="card-body p-4 d-flex flex-column">
                             <div class="d-flex justify-content-between align-items-start">
-                                <h5 class="fw-bold mb-1">@promo.Titulo</h5>
+                                <h5 class="fw-bold mb-1 text-dark">@promo.Titulo</h5>
                                 <div class="text-end">
-                                    <span class="fs-5 fw-bold text-danger">$@promo.PrecioPromocional.ToString("F2")</span>
+                                    <span class="fs-5 fw-bold text-primary">$@promo.PrecioPromocional.ToString("F2")</span>
                                     @if (promo.PrecioOriginal.HasValue)
                                     {
                                         <div class="text-muted text-decoration-line-through small">
@@ -72,15 +74,15 @@ else
                             </p>
 
                             <div class="text-muted small mb-3">
-                                <i class="bi bi-calendar-event me-1"></i>
+                                <i class="bi bi-calendar-event me-1 text-primary"></i>
                                 Vigencia: @promo.FechaInicio.ToString("dd/MM/yyyy") al @promo.FechaFin.ToString("dd/MM/yyyy")
                             </div>
 
-                            <div class="border-top pt-2 d-flex justify-content-between align-items-center">
-                                <button class="btn btn-sm @(promo.EstaActiva ? "btn-success" : "btn-secondary") px-3 py-1"
+                            <div class="border-top pt-3 d-flex justify-content-between align-items-center">
+                                <button class="btn btn-sm @(promo.EstaActiva ? "btn-success" : "btn-secondary") px-3 py-1 rounded-pill fw-semibold shadow-sm"
                                         @onclick="() => TogglePromo(promo)">
-                                    <i class="bi @(promo.EstaActiva ? "bi-check-circle-fill" : "bi-pause-circle-fill") me-1"></i>
-                                    @(promo.EstaActiva ? "Activa" : "Pausada")
+                                    <i class="bi @(promo.EstaActiva ? "bi-check-circle-fill" : "bi-pause-circle-fill") me-1 text-white"></i>
+                                    <span class="text-white">@(promo.EstaActiva ? "Activa" : "Pausada")</span>
                                 </button>
                             </div>
                         </div>
@@ -93,12 +95,15 @@ else
 
 @if (mostrarModal)
 {
-    <div class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5);" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title fw-bold">Nueva Promoción / Combo</h5>
-                    <button type="button" class="btn-close btn-close-white" @onclick="CerrarModal"></button>
+    <div class="modal fade show d-block" style="background-color: rgba(15, 23, 42, 0.55);" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 520px;">
+            <div class="modal-content border shadow-lg rounded-4 overflow-hidden bg-white">
+                <div class="modal-header bg-white border-bottom py-3 px-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <h5 class="modal-title fw-bold text-dark mb-0">Nueva Promoción o Combo</h5>
+                        <small class="text-muted">Publica ofertas especiales para la comunidad universitaria</small>
+                    </div>
+                    <button type="button" class="btn-close" @onclick="CerrarModal"></button>
                 </div>
 
                 <EditForm Model="modeloPromo" OnValidSubmit="GuardarPromocion">
@@ -106,51 +111,57 @@ else
 
                     <div class="modal-body p-4">
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Título de la Oferta</label>
-                            <InputText class="form-control" @bind-Value="modeloPromo.Titulo" placeholder="Ej: Combo Pizza Mediana + Cola / Café con Pan Tarde" />
-                            <ValidationMessage For="() => modeloPromo.Titulo" class="text-danger small" />
+                            <label class="form-label fw-bold small text-dark">Título de la Oferta</label>
+                            <InputText class="form-control text-dark fw-medium" @bind-Value="modeloPromo.Titulo" placeholder="Ej: Combo Pizza Mediana + Cola / Café con Pan Tarde" />
+                            <ValidationMessage For="() => modeloPromo.Titulo" class="text-danger small mt-1" />
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-6">
-                                <label class="form-label fw-semibold">Precio Normal ($)</label>
-                                <InputNumber class="form-control" @bind-Value="modeloPromo.PrecioOriginal" step="0.10" />
+                                <label class="form-label fw-bold small text-dark">Precio Normal ($)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-dark fw-bold border">$</span>
+                                    <InputNumber class="form-control text-dark fw-semibold" @bind-Value="modeloPromo.PrecioOriginal" step="0.10" />
+                                </div>
                             </div>
                             <div class="col-6">
-                                <label class="form-label fw-semibold">Precio Promocional ($)</label>
-                                <InputNumber class="form-control" @bind-Value="modeloPromo.PrecioPromocional" step="0.10" />
-                                <ValidationMessage For="() => modeloPromo.PrecioPromocional" class="text-danger small" />
+                                <label class="form-label fw-bold small text-dark">Precio Oferta ($)</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-dark fw-bold border">$</span>
+                                    <InputNumber class="form-control text-dark fw-bold" @bind-Value="modeloPromo.PrecioPromocional" step="0.10" />
+                                </div>
+                                <ValidationMessage For="() => modeloPromo.PrecioPromocional" class="text-danger small mt-1" />
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">Descripción del Combo</label>
-                            <InputTextArea class="form-control" rows="2" @bind-Value="modeloPromo.Descripcion" placeholder="Ej: Válido a partir de las 15:00. Incluye café filtrado o pasado más dos empanadas de viento." />
+                            <label class="form-label fw-bold small text-dark">Descripción del Combo</label>
+                            <InputTextArea class="form-control text-dark" rows="2" @bind-Value="modeloPromo.Descripcion" placeholder="Ej: Válido a partir de las 15:00. Incluye café filtrado o pasado más dos empanadas de viento." />
                         </div>
 
                         <div class="row g-3">
                             <div class="col-6">
-                                <label class="form-label fw-semibold">Fecha de Inicio</label>
-                                <InputDate class="form-control" @bind-Value="modeloPromo.FechaInicio" />
+                                <label class="form-label fw-bold small text-dark">Fecha de Inicio</label>
+                                <InputDate class="form-control text-dark" @bind-Value="modeloPromo.FechaInicio" />
                             </div>
                             <div class="col-6">
-                                <label class="form-label fw-semibold">Fecha de Fin</label>
-                                <InputDate class="form-control" @bind-Value="modeloPromo.FechaFin" />
+                                <label class="form-label fw-bold small text-dark">Fecha de Fin</label>
+                                <InputDate class="form-control text-dark" @bind-Value="modeloPromo.FechaFin" />
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger" disabled="@guardando">
+                    <div class="modal-footer bg-white border-top px-4 py-3 d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-light border px-4 fw-semibold text-dark" @onclick="CerrarModal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary px-4 fw-semibold shadow-sm" disabled="@guardando">
                             @if (guardando)
                             {
-                                <span class="spinner-border spinner-border-sm me-1"></span>
-                                <span>Guardando...</span>
+                                <span class="spinner-border spinner-border-sm me-1 text-white"></span>
+                                <span class="text-white">Guardando...</span>
                             }
                             else
                             {
-                                <span>Publicar Promoción</span>
+                                <span class="text-white">Publicar Promoción</span>
                             }
                         </button>
                     </div>
